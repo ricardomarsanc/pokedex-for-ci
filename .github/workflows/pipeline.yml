@@ -29,6 +29,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with: 
+          cache: "npm"
           node-version: "14"
       - name: Install dependencies
         run: npm ci
@@ -44,6 +45,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with: 
+          cache: "npm"
           node-version: "14"
       - name: Install dependencies
         run: npm ci
@@ -65,6 +67,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with: 
+          cache: "npm"
           node-version: "14"
       - name: Install dependencies
         run: npm ci
@@ -86,6 +89,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with: 
+          cache: "npm"
           node-version: "14"
       - name: Install dependencies
         run: npm ci
@@ -109,7 +113,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Deploy to Heroku
-        if: ${{ github.event.event }} == "push"
+        if: ${{ github.event.event == "push" }} 
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
