@@ -108,7 +108,7 @@ jobs:
     needs: [test, e2e_test]
     runs-on: ubuntu-18.04
     steps:
-      - name: Deploy
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
