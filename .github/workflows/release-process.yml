@@ -19,6 +19,12 @@ jobs:
           node-version: '14'
       - name: Create release branch
         run: git checkout -b release/v${{ github.event.inputs.versionName }}
+      - name: Push branch
+        run: | 
+          git config --global user.name 'Syltek'
+          git config --global user.email 'syltek@users.noreply.github.com'
+          git commit -am "Automated report"
+          git push
       # - name: Initialize mandatory git config
       #   run: |
       #     git config user.name 'Syltek'
