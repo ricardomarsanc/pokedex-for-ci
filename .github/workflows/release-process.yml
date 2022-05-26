@@ -1,0 +1,20 @@
+name: Release process
+
+on: 
+  workflow_dispatch:
+   inputs:
+    version: 
+      type: string
+      required: true
+      description: 'Enter the new version number'
+
+jobs:
+  release-process:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Test
+        shell: bash
+        run: |
+          git fetch --all
+          grep version package.json
+          yarn version --new-version ${{ inputs.version }}
