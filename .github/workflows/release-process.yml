@@ -19,11 +19,11 @@ jobs:
           node-version: '14'
       - name: Create release branch
         run: git checkout -b release/v${{ github.event.inputs.versionName }}
-      - name: Initialize mandatory git config
-        run: |
-          git config user.name 'Syltek'
-          git config user.email example@github.com
-          grep version package.json
+      # - name: Initialize mandatory git config
+      #   run: |
+      #     git config user.name 'Syltek'
+      #     git config user.email example@github.com
+      #     grep version package.json
       # - name: Push new branch
       #   run: |
       #     git push origin release/v${{ github.event.inputs.versionName }}
