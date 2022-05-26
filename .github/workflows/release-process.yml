@@ -1,0 +1,50 @@
+name: Create release branch
+
+on: 
+  workflow_dispatch:
+   inputs:
+    version: 
+      required: true
+      description: 'Enter the new version number'
+
+jobs:
+  createrelease:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Create release branch
+        run: git checkout -b release/v${{ github.event.inputs.versionName }}
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "Syltek"
+          git config user.email example@github.com
+          echo grep version package.json
+      - name: Push new branch
+        run: git push origin release/v${{ github.event.inputs.versionName }}
+      - name: Create pull request into main
+        uses: thomaseizinger/create-pull-request@1.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: release/v${{ github.event.inputs.versionName }}
+          base: main
+          title: v${{ github.event.inputs.versionName }} into main
+          reviewers: ${{ github.event.issue.user.login }}
+          body: |
+              Hi!
+              This PR was created in response workflow running.
+      - name: Create pull request to develop
+        uses: thomaseizinger/create-pull-request@1.0.0
+        with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            head: release/v${{ github.event.inputs.versionName }}
+            base: develop
+            title: v${{ github.event.inputs.versionName }} into develop
+            reviewers: ${{ github.event.issue.user.login }}
+            body: |
+                Hi!
+                This PR was created in response workflow running.
