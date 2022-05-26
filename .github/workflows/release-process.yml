@@ -27,25 +27,22 @@ jobs:
           grep version package.json
       - name: Push new branch
         run: git push origin release/v${{ github.event.inputs.versionName }}
-      - name: Create pull request into main
-        uses: thomaseizinger/create-pull-request@1.0.0
+      # - name: Create pull request into main
+      #   uses: thomaseizinger/create-pull-request@1.0.0
+      #   with:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #     head: release/v${{ github.event.inputs.versionName }}
+      #     base: main
+      #     title: v${{ github.event.inputs.versionName }} into main
+      #     reviewers: ${{ github.event.issue.user.login }}
+      #     body: |
+      #         Hi!
+      #         This PR was created in response workflow running.
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-          head: release/v${{ github.event.inputs.versionName }}
-          base: main
+          commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
-          reviewers: ${{ github.event.issue.user.login }}
-          body: |
-              Hi!
-              This PR was created in response workflow running.
-      - name: Create pull request to develop
-        uses: thomaseizinger/create-pull-request@1.0.0
-        with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            head: release/v${{ github.event.inputs.versionName }}
-            base: develop
-            title: v${{ github.event.inputs.versionName }} into develop
-            reviewers: ${{ github.event.issue.user.login }}
-            body: |
-                Hi!
-                This PR was created in response workflow running.
+          body: Release branch created by workflow
+          branch: release/v${{ github.event.inputs.versionName }}
+          base: main
