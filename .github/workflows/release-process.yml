@@ -20,10 +20,9 @@ jobs:
       # - name: Create release branch
       #   run: git checkout -b release/v${{ github.event.inputs.versionName }}
       - name: Push branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: | 
-          git config --global user.name 'Syltek'
-          git config --global user.email 'syltek@users.noreply.github.com'
-
           git fetch --all
           grep version package.json
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
