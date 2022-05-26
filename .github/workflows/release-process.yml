@@ -3,7 +3,7 @@ name: Create release branch
 on: 
   workflow_dispatch:
    inputs:
-    version: 
+    versionName: 
       required: true
       description: 'Enter the new version number'
 
@@ -21,9 +21,10 @@ jobs:
         run: git checkout -b release/v${{ github.event.inputs.versionName }}
       - name: Initialize mandatory git config
         run: |
-          git config user.name "Syltek"
+          git config user.name 'Syltek'
           git config user.email example@github.com
-          echo grep version package.json
+          echo 'grep version package.json'
+          grep version package.json
       - name: Push new branch
         run: git push origin release/v${{ github.event.inputs.versionName }}
       - name: Create pull request into main
