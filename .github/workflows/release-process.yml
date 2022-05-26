@@ -17,33 +17,24 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Create release branch
-        run: git checkout -b release/v${{ github.event.inputs.versionName }}
+      # - name: Create release branch
+      #   run: git checkout -b release/v${{ github.event.inputs.versionName }}
       - name: Push branch
         run: | 
           git config --global user.name 'Syltek'
           git config --global user.email 'syltek@users.noreply.github.com'
-          git commit -am "Automated report"
-          git push
-      # - name: Initialize mandatory git config
-      #   run: |
-      #     git config user.name 'Syltek'
-      #     git config user.email example@github.com
-      #     grep version package.json
-      # - name: Push new branch
-      #   run: |
-      #     git push origin release/v${{ github.event.inputs.versionName }}
-      # - name: Create pull request into main
-      #   uses: thomaseizinger/create-pull-request@1.0.0
-      #   with:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #     head: release/v${{ github.event.inputs.versionName }}
-      #     base: main
-      #     title: v${{ github.event.inputs.versionName }} into main
-      #     reviewers: ${{ github.event.issue.user.login }}
-      #     body: |
-      #         Hi!
-      #         This PR was created in response workflow running.
+
+          git fetch --all
+          grep version package.json
+          git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
+          git merge origin/main
+          npm version ${{ github.event.inputs.versionName }}
+          grep version package.json
+          git push origin release/v${{ github.event.inputs.versionName }}
+  createpullrequest:
+    needs: [createrelease]
+    runs-on: ubuntu-18.04
+    steps:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
