@@ -8,27 +8,27 @@ on:
         description: 'Enter the new version number'
 
 jobs:
-  current-version:
-    runs-on: ubuntu-20.04
-    outputs: 
-      version: ${{ steps.vars.outputs.version }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Node Setup
-        uses: ./.github/actions/setup-node
-      - name: Set version as output
-        id: vars
-        run: |
-          number=`grep version package.json`
-          echo "::set-output name=version::$number"
+  # current-version:
+  #   runs-on: ubuntu-20.04
+  #   outputs: 
+  #     version: ${{ steps.vars.outputs.version }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Node Setup
+  #       uses: ./.github/actions/setup-node
+  #     - name: Set version as output
+  #       id: vars
+  #       run: |
+  #         number=`grep version package.json`
+  #         echo "::set-output name=version::$number"
 
   create-release:
-    needs: [current-version]
+    # needs: [current-version]
     runs-on: ubuntu-20.04
-    if: github.event.inputs.versionName >= needs.current-version.outputs.version
+    # if: github.event.inputs.versionName >= needs.current-version.outputs.version
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -41,6 +41,7 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config user.name "${{ github.actor }}"
           git fetch --all
+          git checkout origin/develop
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/develop
           git push --force origin release/v${{ github.event.inputs.versionName }}
