@@ -75,8 +75,6 @@ jobs:
         with:
           branch: "release/v${{ github.event.inputs.versionName }}"
           base: main
-          token: ${{ github.token }}
-          committer: ${{ github.actor }} > AUTHOR
           commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
           body: Release branch created by workflow
