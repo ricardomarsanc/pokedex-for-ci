@@ -42,6 +42,8 @@ jobs:
           git config user.name "${{ github.actor }}"
           git fetch --all
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
+          git merge origin/main
+          npm version ${{ github.event.inputs.versionName }} --allow-same-version
           git push --force origin release/v${{ github.event.inputs.versionName }}
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v4
