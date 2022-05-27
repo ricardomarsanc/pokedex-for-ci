@@ -40,14 +40,12 @@ jobs:
         run: | 
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config user.name "${{ github.actor }}"
-          git fetch --all
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/main
           npm version ${{ github.event.inputs.versionName }} --allow-same-version
-          git add package.json
-          git add package-lock.json
+          git add .
           git commit -m "Updated version"
-          git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
+          git push --force origin release/v${{ github.event.inputs.versionName }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
