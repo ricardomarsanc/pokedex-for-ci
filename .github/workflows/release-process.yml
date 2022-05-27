@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node@main
+        uses: ./.github/actions/setup-node
       - name: Set version as output
         id: vars
         run: |
@@ -35,7 +35,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node@main
+        uses: ./.github/actions/setup-node
       - name: Create release branch
         run: | 
           git config user.email "${{ github.actor }}@users.noreply.github.com"
@@ -52,7 +52,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node@main
+        uses: ./.github/actions/setup-node
       - name: Update and push
         run: | 
           git config user.email "${{ github.actor }}@users.noreply.github.com"
@@ -69,7 +69,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node@main
+        uses: ./.github/actions/setup-node
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
