@@ -28,7 +28,7 @@ jobs:
   create-release:
     needs: [current-version]
     runs-on: ubuntu-20.04
-    if: Number(github.event.inputs.versionName) >= Number(needs.current-version.outputs.version) 
+    if: github.event.inputs.versionName >= needs.current-version.outputs.version
     env:
       NEW_VERSION: ${{ github.event.inputs.versionName }}
     steps:
