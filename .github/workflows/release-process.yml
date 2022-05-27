@@ -42,8 +42,9 @@ jobs:
           node-version: '14'
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ github.token }}
           commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
           body: Release branch created by workflow
