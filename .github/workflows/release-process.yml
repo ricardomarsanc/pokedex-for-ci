@@ -30,7 +30,7 @@ jobs:
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
   createpullrequest:
     needs: [createrelease]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -42,9 +42,8 @@ jobs:
           node-version: '14'
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         with:
+          token: ${{ github.token}}
           commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
           body: Release branch created by workflow
