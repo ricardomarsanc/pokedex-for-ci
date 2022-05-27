@@ -45,16 +45,6 @@ jobs:
           git merge origin/main
           npm version ${{ github.event.inputs.versionName }} --allow-same-version
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
-  create-pull-request:
-    needs: [create-release]
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Node Setup
-        uses: ./.github/actions/setup-node
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
@@ -63,3 +53,4 @@ jobs:
           commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
           body: Release branch created by workflow
+      
