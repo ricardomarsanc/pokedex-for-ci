@@ -27,7 +27,7 @@ jobs:
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/main
           npm version ${{ github.event.inputs.versionName }}
-          git push origin release/v${{ github.event.inputs.versionName }}
+          git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
   createpullrequest:
     needs: [createrelease]
     runs-on: ubuntu-18.04
