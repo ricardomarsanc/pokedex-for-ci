@@ -44,6 +44,9 @@ jobs:
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/main
           npm version ${{ github.event.inputs.versionName }} --allow-same-version
+          git add package.json
+          git add package-lock.json
+          git commit -m "Updated version"
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
