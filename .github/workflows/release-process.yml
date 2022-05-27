@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node
+        uses: ./.github/actions/setup-node@main
       - name: Set version as output
         id: vars
         run: |
@@ -29,15 +29,13 @@ jobs:
     needs: [current-version]
     runs-on: ubuntu-20.04
     if: github.event.inputs.versionName >= needs.current-version.outputs.version
-    env:
-      NEW_VERSION: ${{ github.event.inputs.versionName }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node
+        uses: ./.github/actions/setup-node@main
       - name: Create release branch
         run: | 
           git config user.email "${{ github.actor }}@users.noreply.github.com"
@@ -54,7 +52,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node
+        uses: ./.github/actions/setup-node@main
       - name: Update and push
         run: | 
           git config user.email "${{ github.actor }}@users.noreply.github.com"
@@ -71,13 +69,14 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/actions/setup-node
+        uses: ./.github/actions/setup-node@main
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
+          branch: "release/v${{ github.event.inputs.versionName }}"
+          base: main
           token: ${{ github.token }}
+          committer: ${{ github.actor }}
           commit-message: release branch created
           title: v${{ github.event.inputs.versionName }} into main
           body: Release branch created by workflow
-          branch: release/v${{ github.event.inputs.versionName }}
-          base: main
