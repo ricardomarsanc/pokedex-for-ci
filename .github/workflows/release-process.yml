@@ -54,7 +54,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: ./.github/workflows/setup-node@main
+        uses: /.github/workflows/setup-node@main
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
