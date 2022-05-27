@@ -1,4 +1,5 @@
-name: "Setup node"
+name: 'Setup node'
+description: Setup node to run the workflow
 
 inputs:
   node-version:

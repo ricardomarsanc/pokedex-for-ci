@@ -43,7 +43,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git checkout release/v${{ github.event.inputs.versionName }}
-          npm version ${{ github.event.inputs.versionName }}
+          npm version ${{ github.event.inputs.versionName }} --allow-same-version
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
   createpullrequest:
     needs: [createrelease, updateAndPush]
@@ -54,7 +54,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Node Setup
-        uses: /.github/workflows/setup-node@main
+        uses: ./.github/actions/setup-node
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
