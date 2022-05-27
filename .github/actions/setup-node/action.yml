@@ -4,7 +4,6 @@ description: Setup node to run the workflow
 inputs:
   node-version:
     description: "Node Version"
-    type: string
     required: false
     default: '14'
 

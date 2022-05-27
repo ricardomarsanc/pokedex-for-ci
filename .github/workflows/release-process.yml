@@ -2,51 +2,68 @@ name: Create release branch
 
 on: 
   workflow_dispatch:
-   inputs:
-    versionName: 
-      required: true
-      description: 'Enter the new version number'
+    inputs:
+      versionName: 
+        required: true
+        description: 'Enter the new version number'
 
 jobs:
-  createrelease:
+  current-version:
     runs-on: ubuntu-20.04
+    outputs: 
+      version: ${{ steps.vars.outputs.version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Use Node 14
-        uses: actions/setup-node@v2
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+      - name: Set version as output
+        id: vars
+        run: |
+          number=`grep version package.json`
+          echo "::set-output name=version::$number"
+
+  create-release:
+    needs: [current-version]
+    runs-on: ubuntu-20.04
+    if: Number(github.event.inputs.versionName) >= Number(needs.current-version.outputs.version) 
+    env:
+      NEW_VERSION: ${{ github.event.inputs.versionName }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
-          node-version: '14'
-      - name: Push branch
+          fetch-depth: 0
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+      - name: Create release branch
         run: | 
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
           git fetch --all
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/main
-  updateAndPush:
-    needs: [createrelease]
+  update-and-push:
+    needs: [create-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Use Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
       - name: Update and push
         run: | 
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
           git checkout release/v${{ github.event.inputs.versionName }}
           npm version ${{ github.event.inputs.versionName }} --allow-same-version
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
-  createpullrequest:
-    needs: [createrelease, updateAndPush]
+  create-pull-request:
+    needs: [create-release, update-and-push]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
