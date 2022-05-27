@@ -43,25 +43,10 @@ jobs:
           git fetch --all
           git checkout -B release/v${{ github.event.inputs.versionName }} origin/develop
           git merge origin/main
-  update-and-push:
-    needs: [create-release]
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Node Setup
-        uses: ./.github/actions/setup-node
-      - name: Update and push
-        run: | 
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git config user.name "${{ github.actor }}"
-          git checkout release/v${{ github.event.inputs.versionName }}
           npm version ${{ github.event.inputs.versionName }} --allow-same-version
           git push --force-with-lease origin release/v${{ github.event.inputs.versionName }}
   create-pull-request:
-    needs: [create-release, update-and-push]
+    needs: [create-release]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
