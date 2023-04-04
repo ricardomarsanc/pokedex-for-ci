@@ -1,6 +1,6 @@
 [![Deployment Pipeline](https://github.com/midudev/pokedex-for-ci/actions/workflows/pipeline.yml/badge.svg)](https://github.com/midudev/pokedex-for-ci/actions/workflows/pipeline.yml)
 
-![Visualization of the codebase](./diagram.svg)
+![Visualization of the codebase](./images/diagram.svg)
 
 # Full Stack open CI/CD
 
